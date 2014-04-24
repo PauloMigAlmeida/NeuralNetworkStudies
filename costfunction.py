@@ -46,10 +46,10 @@ def calculate(X, Y, initial_theta1, initial_theta2, input_neurons , hidden_neuro
         z3.append(z3_temp)
 
     a3 = z3
-    print len(z3)
+    # print len(z3)
 
     #Calculating Cost Function
-    y_eye = identity_matrix(4)
+    y_eye = identity_matrix(output_neurons)
     sum_m_values = 0
     for i in range(len(X)):
         sum_label_values = 0
@@ -74,7 +74,7 @@ def calculate(X, Y, initial_theta1, initial_theta2, input_neurons , hidden_neuro
                 sum_regularized_theta2_k += math.pow(row_k,2)
         sum_regularized_theta2_j += sum_regularized_theta2_k
 
-    print sum_regularized_theta1_j, sum_regularized_theta2_j
+    # print sum_regularized_theta1_j, sum_regularized_theta2_j
     return ((float(1)/float(len(X))) * sum_m_values) + ((float(lambda_value)/float((2*len(X)))) * (sum_regularized_theta1_j + sum_regularized_theta2_j))
 
 
