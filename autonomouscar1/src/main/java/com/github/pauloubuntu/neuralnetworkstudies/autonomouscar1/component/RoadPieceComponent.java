@@ -4,11 +4,13 @@ package com.github.pauloubuntu.neuralnetworkstudies.autonomouscar1.component;
  * Project: autonomouscar1
  * User: paulomiguelalmeida
  * Date: 5/22/14
- * Time: 11:49 PM
+ * Time: 11:25 PM
  */
-public class BackgroundPanel extends AbstractImagePanel {
+public class RoadPieceComponent extends AbstractImagePanel {
 
-    public BackgroundPanel() {
-        super("/grass_texture.jpg");
+    public RoadPieceComponent(){
+        super("/road_texture.jpg");
     }
+
+
 }

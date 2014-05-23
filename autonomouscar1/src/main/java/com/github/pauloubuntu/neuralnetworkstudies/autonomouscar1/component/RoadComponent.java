@@ -1,50 +1,127 @@
 package com.github.pauloubuntu.neuralnetworkstudies.autonomouscar1.component;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.*;
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Project: autonomouscar1
- * User: paulomiguelalmeida
- * Date: 5/22/14
- * Time: 11:25 PM
+ * Created with IntelliJ IDEA.
+ * User: paulo.rodenas
+ * Date: 5/23/14
+ * Time: 5:16 PM
  */
-public class RoadComponent extends JPanel {
 
-    private Image backgroundImage;
+public class RoadComponent {
+
+    private List<RoadPieceComponent> roadPieceComponentList;
+    private RoadPieceComponent roadPieceComponentExample;
 
 
     public RoadComponent(){
-        try {
-            backgroundImage = ImageIO.read(this.getClass().getResourceAsStream("/road_texture.jpg"));
-        } catch (IOException e) {
-            e.printStackTrace();
+        roadPieceComponentList = new ArrayList<RoadPieceComponent>();
+
+        roadPieceComponentExample = new RoadPieceComponent();
+
+        int bottomLane = getInitialBottomLane();
+        int topLane = getInitialTopLane();
+        int left = getInitialLeftLane();
+        int right = left + (7 * roadPieceComponentExample.getWidth());
+        int delta=0;
+
+        //Bottom Lane
+        delta = addRoadComponentHorizontal(left, bottomLane);
+        for (int i =0; i < 7; i++){
+            delta = addRoadComponentHorizontal(delta, bottomLane);
+        }
+        //Top Lane
+        delta = addRoadComponentHorizontal(left, topLane);
+        for (int i =0; i < 7; i++){
+            delta = addRoadComponentHorizontal(delta, topLane);
+        }
+
+        //Left Corner
+        int newLeft = left - roadPieceComponentExample.getWidth(),newTop = topLane;
+        for(int i =0; i < 15; i ++){
+            addRoadComponentVertical(newLeft,newTop);
+            newLeft -= 5;
+            newTop +=  5;
+        }
+
+        //Left Lane
+        delta = addRoadComponentVertical(newLeft + 5,newTop -5 + roadPieceComponentExample.getHeight());
+        delta = addRoadComponentVertical(newLeft + 5,delta);
+
+        newLeft = newLeft + 5 ; newTop = delta;
+
+        for(int i =0; i < 15; i ++){
+            addRoadComponentVertical(newLeft,newTop);
+            newLeft += 5;
+            newTop +=  5;
+        }
+
+        //Right Corner
+        int newRight = right + roadPieceComponentExample.getWidth();
+        newTop = topLane;
+        for(int i =0; i < 15; i ++){
+            addRoadComponentVertical(newRight,newTop);
+            newRight += 5;
+            newTop +=  5;
+        }
+
+        //Right Lane
+        delta = addRoadComponentVertical(newRight - 5,newTop -5 + roadPieceComponentExample.getHeight());
+        delta = addRoadComponentVertical(newRight - 5,delta);
+
+        newRight = newRight -5;
+        newTop = delta;
+        for(int i =0; i < 15; i ++){
+            addRoadComponentVertical(newRight,newTop);
+            newRight -= 5;
+            newTop +=  5;
         }
     }
 
-    @Override
-    public void paint(Graphics g) {
-        super.paint(g);
-        if(backgroundImage != null){
-            g.drawImage(backgroundImage,0,0,null);
+    public int getInitialBottomLane(){
+        return 460;
+    }
+
+    public int getInitialTopLane(){
+        return 80;
+    }
+
+    public int getInitialLeftLane(){
+        return 190;
+    }
+
+
+    private int addRoadComponentHorizontal(int x, int y){
+        RoadPieceComponent roadPieceComponent = addRoadComponent(x, y);
+        return x + roadPieceComponent.getWidth();
+    }
+
+    private int addRoadComponentVertical(int x, int y){
+        RoadPieceComponent roadPieceComponent = addRoadComponent(x, y);
+        return y + roadPieceComponent.getHeight();
+    }
+
+    private RoadPieceComponent addRoadComponent(int x, int y) {
+        RoadPieceComponent roadPieceComponent = new RoadPieceComponent();
+        roadPieceComponent.setBounds(x,y, roadPieceComponent.getWidth(), roadPieceComponent.getHeight());
+        roadPieceComponentList.add(roadPieceComponent);
+        return roadPieceComponent;
+    }
+
+    public void addToContentPanel(JPanel panel){
+        for(RoadPieceComponent roadPieceComponent : roadPieceComponentList){
+            panel.add(roadPieceComponent);
         }
     }
 
-    @Override
-    public int getWidth() {
-        if(backgroundImage != null){
-            return backgroundImage.getWidth(null);
-        }
-        return super.getWidth();
+    public int getRoadPieceWidth(){
+        return this.roadPieceComponentExample.getWidth();
     }
 
-    @Override
-    public int getHeight() {
-        if(backgroundImage != null){
-            return backgroundImage.getHeight(null);
-        }
-        return super.getHeight();
+    public int getRoadPieceHeight(){
+        return this.roadPieceComponentExample.getHeight();
     }
 }

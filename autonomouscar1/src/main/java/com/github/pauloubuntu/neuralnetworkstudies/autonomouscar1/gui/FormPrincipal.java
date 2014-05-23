@@ -2,10 +2,10 @@ package com.github.pauloubuntu.neuralnetworkstudies.autonomouscar1.gui;
 
 import com.github.pauloubuntu.neuralnetworkstudies.autonomouscar1.component.GamePanel;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 /**
  * Project: autonomouscar1
@@ -13,7 +13,7 @@ import java.io.File;
  * Date: 5/22/14
  * Time: 10:54 PM
  */
-public class FormPrincipal extends JFrame {
+public class FormPrincipal extends JFrame implements KeyListener{
     private JPanel bottomPanel;
     private GamePanel centerPanel;
     private JLabel errorValueLabel, iterationValueLabel, errorLabel, iterationLabel;
@@ -40,5 +40,22 @@ public class FormPrincipal extends JFrame {
 
         setSize(1024, 658);
         setLocationRelativeTo(null);
+
+        addKeyListener(this);
+    }
+
+    @Override
+    public void keyTyped(KeyEvent keyEvent) {
+        this.centerPanel.keyTyped(keyEvent);
+    }
+
+    @Override
+    public void keyPressed(KeyEvent keyEvent) {
+        this.centerPanel.keyPressed(keyEvent);
+    }
+
+    @Override
+    public void keyReleased(KeyEvent keyEvent) {
+        this.centerPanel.keyReleased(keyEvent);
     }
 }
