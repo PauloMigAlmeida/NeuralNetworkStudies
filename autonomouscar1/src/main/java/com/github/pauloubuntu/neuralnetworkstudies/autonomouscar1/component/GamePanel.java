@@ -1,6 +1,7 @@
 package com.github.pauloubuntu.neuralnetworkstudies.autonomouscar1.component;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -26,9 +27,9 @@ public class GamePanel extends JPanel implements KeyListener{
 
         carComponent.setBounds(
                 roadComponent.getInitialLeftLane() + roadComponent.getRoadPieceWidth() * 3,
-                roadComponent.getInitialBottomLane() + (roadComponent.getRoadPieceHeight() - carComponent.getHeight())/2,
-                carComponent.getWidth(),
-                carComponent.getHeight()
+                roadComponent.getInitialBottomLane() + (roadComponent.getRoadPieceHeight() - 60)/2,
+                80,
+                60
         );
 
         add(carComponent);
@@ -45,11 +46,13 @@ public class GamePanel extends JPanel implements KeyListener{
     @Override
     public void keyTyped(KeyEvent keyEvent) {
         this.carComponent.keyTyped(keyEvent);
+
     }
 
     @Override
     public void keyPressed(KeyEvent keyEvent) {
         this.carComponent.keyPressed(keyEvent);
+        System.out.println("Background intersects with carComponent " + this.getBounds().intersects(carComponent.getBounds()));
     }
 
     @Override
