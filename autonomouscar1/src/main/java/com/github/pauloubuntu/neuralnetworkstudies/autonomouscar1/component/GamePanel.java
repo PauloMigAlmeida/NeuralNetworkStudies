@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.IOException;
 
 /**
  * Project: autonomouscar1
@@ -21,38 +22,38 @@ public class GamePanel extends JPanel implements KeyListener{
     public GamePanel(){
         setLayout(null);
 
-        roadComponent = new RoadComponent();
-
+        try {
+            roadComponent = new RoadComponent();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         carComponent = new CarComponent();
-
         carComponent.setBounds(
                 roadComponent.getInitialLeftLane() + roadComponent.getRoadPieceWidth() * 3,
-                roadComponent.getInitialBottomLane() + (roadComponent.getRoadPieceHeight() - 60)/2,
-                80,
-                60
+                roadComponent.getInitialBottomLane() + (roadComponent.getRoadPieceHeight() - carComponent.getHeight())/2,
+                carComponent.getWidth(),
+                carComponent.getHeight()
         );
-
         add(carComponent);
-
         roadComponent.addToContentPanel(this);
-
-
         add(new BackgroundPanel());
 
         this.addKeyListener(this);
     }
 
+    //-----------------------------------
+    //          KeyListener Methods
+    //-----------------------------------
 
     @Override
     public void keyTyped(KeyEvent keyEvent) {
         this.carComponent.keyTyped(keyEvent);
-
     }
 
     @Override
     public void keyPressed(KeyEvent keyEvent) {
         this.carComponent.keyPressed(keyEvent);
-        System.out.println("Background intersects with carComponent " + this.getBounds().intersects(carComponent.getBounds()));
+//        System.out.println("Background intersects with carComponent " + this.getBounds().intersects(carComponent.getBounds()));
     }
 
     @Override

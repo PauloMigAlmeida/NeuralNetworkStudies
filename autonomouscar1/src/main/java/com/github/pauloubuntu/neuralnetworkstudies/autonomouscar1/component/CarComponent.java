@@ -21,6 +21,7 @@ public class CarComponent extends JPanel implements KeyListener {
     private BufferedImage drawImage;
 
     private static final int VELOCITY = 10;
+    private static final int STEERING_WHEEL_FACTOR = 2;
     private int angle;
     private GraphicsConfiguration gc ;
 
@@ -37,6 +38,9 @@ public class CarComponent extends JPanel implements KeyListener {
         drawImage = tilt(backgroundImage,Math.toRadians(angle),gc);
     }
 
+    //-----------------------------------
+    //          JFrame Methods
+    //-----------------------------------
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -45,6 +49,26 @@ public class CarComponent extends JPanel implements KeyListener {
         int w = (int) size.getWidth(), h = (int) size.getHeight();
         g2d.drawImage(drawImage, (w - drawImage.getWidth())/2,(h - drawImage.getHeight())/2, null);
     }
+
+    @Override
+    public int getWidth() {
+        if(backgroundImage != null){
+            return Math.max(backgroundImage.getWidth(),backgroundImage.getWidth());
+        }
+        return super.getWidth();
+    }
+
+    @Override
+    public int getHeight() {
+        if(backgroundImage != null){
+            return Math.max(backgroundImage.getWidth(),backgroundImage.getWidth());
+        }
+        return super.getHeight();
+    }
+
+    //-----------------------------------
+    //          UI Methods
+    //-----------------------------------
 
     public static BufferedImage tilt(BufferedImage image, double angle, GraphicsConfiguration gc) {
         System.out.println("Angle is : " + angle);
@@ -65,6 +89,10 @@ public class CarComponent extends JPanel implements KeyListener {
         return gd.getDefaultConfiguration();
     }
 
+    //-----------------------------------
+    //          KeyListener Methods
+    //-----------------------------------
+
     @Override
     public void keyPressed(KeyEvent keyEvent) {
         Rectangle rect = this.getBounds();
@@ -74,13 +102,19 @@ public class CarComponent extends JPanel implements KeyListener {
             yDirection = rect.y -(int) (VELOCITY * Math.sin(Math.toRadians(angle)));
             this.setLocation(xDirection, yDirection);
         } else if (keyEvent.getKeyCode() == KeyEvent.VK_LEFT) {
-            this.angle -= 3;
+            this.angle -= 3 * STEERING_WHEEL_FACTOR;
             drawImage = tilt(backgroundImage,Math.toRadians(angle),gc);
-            repaint();
+//            repaint();
+            xDirection = rect.x - (int) (VELOCITY * Math.cos(Math.toRadians(angle)));
+            yDirection = rect.y -(int) (VELOCITY * Math.sin(Math.toRadians(angle)));
+            this.setLocation(xDirection, yDirection);
         } else if (keyEvent.getKeyCode() == KeyEvent.VK_RIGHT) {
-            this.angle += 3;
+            this.angle += 3 * STEERING_WHEEL_FACTOR;
             drawImage = tilt(backgroundImage,Math.toRadians(angle),gc);
-            repaint();
+//            repaint();
+            xDirection = rect.x - (int) (VELOCITY * Math.cos(Math.toRadians(angle)));
+            yDirection = rect.y -(int) (VELOCITY * Math.sin(Math.toRadians(angle)));
+            this.setLocation(xDirection, yDirection);
         } else if (keyEvent.getKeyCode() == KeyEvent.VK_DOWN) {
             xDirection = rect.x + (int) (VELOCITY * Math.cos(Math.toRadians(angle)));
             yDirection = rect.y + (int) (VELOCITY * Math.sin(Math.toRadians(angle)));
@@ -96,5 +130,6 @@ public class CarComponent extends JPanel implements KeyListener {
     @Override
     public void keyTyped(KeyEvent keyEvent) {
     }
+
 
 }

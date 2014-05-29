@@ -1,6 +1,7 @@
 package com.github.pauloubuntu.neuralnetworkstudies.autonomouscar1.component;
 
 import javax.swing.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,68 +18,71 @@ public class RoadComponent {
     private RoadPieceComponent roadPieceComponentExample;
 
 
-    public RoadComponent(){
+    public RoadComponent() throws IOException {
         roadPieceComponentList = new ArrayList<RoadPieceComponent>();
 
-        roadPieceComponentExample = new RoadPieceComponent();
+        roadPieceComponentExample = new RoadPieceComponent(0);
 
         int bottomLane = getInitialBottomLane();
         int topLane = getInitialTopLane();
         int left = getInitialLeftLane();
         int right = left + (7 * roadPieceComponentExample.getWidth());
         int delta=0;
+        int bottomLaneAngle = 0;
+        int topLaneAngle = 0;
 
         //Bottom Lane
-        delta = addRoadComponentHorizontal(left, bottomLane);
+        delta = addRoadComponentHorizontal(left, bottomLane, bottomLaneAngle);
         for (int i =0; i < 7; i++){
-            delta = addRoadComponentHorizontal(delta, bottomLane);
+            delta = addRoadComponentHorizontal(delta, bottomLane, bottomLaneAngle);
         }
         //Top Lane
-        delta = addRoadComponentHorizontal(left, topLane);
+        delta = addRoadComponentHorizontal(left, topLane, topLaneAngle);
         for (int i =0; i < 7; i++){
-            delta = addRoadComponentHorizontal(delta, topLane);
+            delta = addRoadComponentHorizontal(delta, topLane, topLaneAngle);
         }
 
         //Left Corner
         int newLeft = left - roadPieceComponentExample.getWidth(),newTop = topLane;
-        for(int i =0; i < 15; i ++){
-            addRoadComponentVertical(newLeft,newTop);
-            newLeft -= 5;
-            newTop +=  5;
-        }
-
-        //Left Lane
-        delta = addRoadComponentVertical(newLeft + 5,newTop -5 + roadPieceComponentExample.getHeight());
-        delta = addRoadComponentVertical(newLeft + 5,delta);
-
-        newLeft = newLeft + 5 ; newTop = delta;
-
-        for(int i =0; i < 15; i ++){
-            addRoadComponentVertical(newLeft,newTop);
-            newLeft += 5;
-            newTop +=  5;
-        }
-
-        //Right Corner
-        int newRight = right + roadPieceComponentExample.getWidth();
-        newTop = topLane;
-        for(int i =0; i < 15; i ++){
-            addRoadComponentVertical(newRight,newTop);
-            newRight += 5;
-            newTop +=  5;
-        }
-
-        //Right Lane
-        delta = addRoadComponentVertical(newRight - 5,newTop -5 + roadPieceComponentExample.getHeight());
-        delta = addRoadComponentVertical(newRight - 5,delta);
-
-        newRight = newRight -5;
-        newTop = delta;
-        for(int i =0; i < 15; i ++){
-            addRoadComponentVertical(newRight,newTop);
-            newRight -= 5;
-            newTop +=  5;
-        }
+        addRoadComponentVertical(newLeft,newTop, -60);
+//        for(int i =0; i < 15; i ++){
+//            addRoadComponentVertical(newLeft,newTop, 15);
+//            newLeft -= 5;
+//            newTop +=  5;
+//        }
+//
+//        //Left Lane
+//        delta = addRoadComponentVertical(newLeft + 5,newTop -5 + roadPieceComponentExample.getHeight(), angle);
+//        delta = addRoadComponentVertical(newLeft + 5,delta, angle);
+//
+//        newLeft = newLeft + 5 ; newTop = delta;
+//
+//        for(int i =0; i < 15; i ++){
+//            addRoadComponentVertical(newLeft,newTop, angle);
+//            newLeft += 5;
+//            newTop +=  5;
+//        }
+//
+//        //Right Corner
+//        int newRight = right + roadPieceComponentExample.getWidth();
+//        newTop = topLane;
+//        for(int i =0; i < 15; i ++){
+//            addRoadComponentVertical(newRight,newTop, angle);
+//            newRight += 5;
+//            newTop +=  5;
+//        }
+//
+//        //Right Lane
+//        delta = addRoadComponentVertical(newRight - 5,newTop -5 + roadPieceComponentExample.getHeight(), angle);
+//        delta = addRoadComponentVertical(newRight - 5,delta, angle);
+//
+//        newRight = newRight -5;
+//        newTop = delta;
+//        for(int i =0; i < 15; i ++){
+//            addRoadComponentVertical(newRight,newTop, angle);
+//            newRight -= 5;
+//            newTop +=  5;
+//        }
     }
 
     public int getInitialBottomLane(){
@@ -94,18 +98,18 @@ public class RoadComponent {
     }
 
 
-    private int addRoadComponentHorizontal(int x, int y){
-        RoadPieceComponent roadPieceComponent = addRoadComponent(x, y);
+    private int addRoadComponentHorizontal(int x, int y, int angle) throws IOException {
+        RoadPieceComponent roadPieceComponent = addRoadComponent(x, y, angle);
         return x + roadPieceComponent.getWidth();
     }
 
-    private int addRoadComponentVertical(int x, int y){
-        RoadPieceComponent roadPieceComponent = addRoadComponent(x, y);
+    private int addRoadComponentVertical(int x, int y, int angle) throws IOException {
+        RoadPieceComponent roadPieceComponent = addRoadComponent(x, y, angle);
         return y + roadPieceComponent.getHeight();
     }
 
-    private RoadPieceComponent addRoadComponent(int x, int y) {
-        RoadPieceComponent roadPieceComponent = new RoadPieceComponent();
+    private RoadPieceComponent addRoadComponent(int x, int y, int angle) throws IOException {
+        RoadPieceComponent roadPieceComponent = new RoadPieceComponent(angle);
         roadPieceComponent.setBounds(x,y, roadPieceComponent.getWidth(), roadPieceComponent.getHeight());
         roadPieceComponentList.add(roadPieceComponent);
         return roadPieceComponent;
