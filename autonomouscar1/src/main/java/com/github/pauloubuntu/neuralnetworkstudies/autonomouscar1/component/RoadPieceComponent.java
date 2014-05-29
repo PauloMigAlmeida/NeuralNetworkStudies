@@ -2,7 +2,6 @@ package com.github.pauloubuntu.neuralnetworkstudies.autonomouscar1.component;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 /**
@@ -17,6 +16,7 @@ public class RoadPieceComponent extends AbstractRotateImagePanel {
         super(ImageIO.read(RoadPieceComponent.class.getResourceAsStream("/road_texture.jpg")),angle, true);
         setOpaque(false);
 
+//        setBackground(Color.RED);
 //        Graphics2D graphics2D = drawImage.createGraphics();
 //        graphics2D.setColor(Color.WHITE);
 //        graphics2D.drawLine(0,0,0,this.getHeight());

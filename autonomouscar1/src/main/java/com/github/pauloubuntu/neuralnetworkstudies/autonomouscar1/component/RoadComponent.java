@@ -30,25 +30,24 @@ public class RoadComponent {
         int delta=0;
         int bottomLaneAngle = 0;
         int topLaneAngle = 0;
+        int leftCornerAngle = -20;
 
-        //Bottom Lane
-        delta = addRoadComponentHorizontal(left, bottomLane, bottomLaneAngle);
-        for (int i =0; i < 7; i++){
-            delta = addRoadComponentHorizontal(delta, bottomLane, bottomLaneAngle);
-        }
-        //Top Lane
-        delta = addRoadComponentHorizontal(left, topLane, topLaneAngle);
-        for (int i =0; i < 7; i++){
-            delta = addRoadComponentHorizontal(delta, topLane, topLaneAngle);
-        }
+
 
         //Left Corner
-        int newLeft = left - roadPieceComponentExample.getWidth(),newTop = topLane;
-        addRoadComponentVertical(newLeft,newTop, -60);
-//        for(int i =0; i < 15; i ++){
-//            addRoadComponentVertical(newLeft,newTop, 15);
+        int newLeft = left - roadPieceComponentExample.getWidth() + 5,newTop = topLane;
+
+        addRoadComponentVertical(newLeft,newTop, leftCornerAngle);
+
+        newLeft -= 45;
+        newTop +=  30;
+        leftCornerAngle -=35;
+        addRoadComponentVertical(newLeft,newTop, leftCornerAngle);
+//        for(int i =0; i < 1; i ++){
+//            addRoadComponentVertical(newLeft,newTop, leftCornerAngle);
 //            newLeft -= 5;
-//            newTop +=  5;
+//            newTop +=  40;
+//            leftCornerAngle -=5;
 //        }
 //
 //        //Left Lane
@@ -83,6 +82,18 @@ public class RoadComponent {
 //            newRight -= 5;
 //            newTop +=  5;
 //        }
+
+
+        //Bottom Lane
+        delta = addRoadComponentHorizontal(left, bottomLane, bottomLaneAngle);
+        for (int i =0; i < 7; i++){
+            delta = addRoadComponentHorizontal(delta, bottomLane, bottomLaneAngle);
+        }
+        //Top Lane
+        delta = addRoadComponentHorizontal(left, topLane, topLaneAngle);
+        for (int i =0; i < 7; i++){
+            delta = addRoadComponentHorizontal(delta, topLane, topLaneAngle);
+        }
     }
 
     public int getInitialBottomLane(){

@@ -41,18 +41,12 @@ public abstract class AbstractRotateImagePanel extends JPanel {
 
     @Override
     public int getWidth() {
-        if(backgroundImage != null){
-            return Math.max(backgroundImage.getWidth(),backgroundImage.getWidth());
-        }
-        return super.getWidth();
+        return drawImage.getWidth();
     }
 
     @Override
     public int getHeight() {
-        if(backgroundImage != null){
-            return Math.max(backgroundImage.getWidth(),backgroundImage.getWidth());
-        }
-        return super.getHeight();
+        return drawImage.getHeight();
     }
 
     //-----------------------------------
