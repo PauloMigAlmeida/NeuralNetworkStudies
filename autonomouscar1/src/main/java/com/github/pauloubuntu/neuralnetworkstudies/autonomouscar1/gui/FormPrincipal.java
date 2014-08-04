@@ -1,6 +1,6 @@
 package com.github.pauloubuntu.neuralnetworkstudies.autonomouscar1.gui;
 
-import com.github.pauloubuntu.neuralnetworkstudies.autonomouscar1.component.GamePanel;
+import com.github.pauloubuntu.neuralnetworkstudies.autonomouscar1.component.ui.GamePanel;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,12 +1,10 @@
-package com.github.pauloubuntu.neuralnetworkstudies.autonomouscar1.component;
+package com.github.pauloubuntu.neuralnetworkstudies.autonomouscar1.component.ui;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -20,26 +18,30 @@ public class CarComponent extends JPanel implements KeyListener {
     private BufferedImage backgroundImage;
     private BufferedImage drawImage;
 
-    private static final int VELOCITY = 10;
-    private static final int STEERING_WHEEL_FACTOR = 2;
+    public static final int VELOCITY = 10;
+    public static final int STEERING_WHEEL_FACTOR = 2;
     private int angle;
     private GraphicsConfiguration gc ;
 
     public CarComponent() {
         gc = getDefaultConfiguration();
 //        this.setOpaque(false);
+        setBackground(Color.RED);
         try {
             backgroundImage = ImageIO.read(this.getClass().getResourceAsStream("/car.jpg"));
         } catch (IOException e) {
             e.printStackTrace();
         }
         this.angle = 0;
-        setBackground(Color.RED);
         drawImage = tilt(backgroundImage,Math.toRadians(angle),gc);
     }
 
+    public int getAngle() {
+        return angle;
+    }
+
     //-----------------------------------
-    //          JFrame Methods
+    //          JPanel Methods
     //-----------------------------------
     @Override
     protected void paintComponent(Graphics g) {
@@ -104,14 +106,12 @@ public class CarComponent extends JPanel implements KeyListener {
         } else if (keyEvent.getKeyCode() == KeyEvent.VK_LEFT) {
             this.angle -= 3 * STEERING_WHEEL_FACTOR;
             drawImage = tilt(backgroundImage,Math.toRadians(angle),gc);
-//            repaint();
             xDirection = rect.x - (int) (VELOCITY * Math.cos(Math.toRadians(angle)));
             yDirection = rect.y -(int) (VELOCITY * Math.sin(Math.toRadians(angle)));
             this.setLocation(xDirection, yDirection);
         } else if (keyEvent.getKeyCode() == KeyEvent.VK_RIGHT) {
             this.angle += 3 * STEERING_WHEEL_FACTOR;
             drawImage = tilt(backgroundImage,Math.toRadians(angle),gc);
-//            repaint();
             xDirection = rect.x - (int) (VELOCITY * Math.cos(Math.toRadians(angle)));
             yDirection = rect.y -(int) (VELOCITY * Math.sin(Math.toRadians(angle)));
             this.setLocation(xDirection, yDirection);
@@ -130,6 +130,7 @@ public class CarComponent extends JPanel implements KeyListener {
     @Override
     public void keyTyped(KeyEvent keyEvent) {
     }
+
 
 
 }

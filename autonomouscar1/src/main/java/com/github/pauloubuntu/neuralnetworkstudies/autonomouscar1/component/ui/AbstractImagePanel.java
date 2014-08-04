@@ -1,4 +1,4 @@
-package com.github.pauloubuntu.neuralnetworkstudies.autonomouscar1.component;
+package com.github.pauloubuntu.neuralnetworkstudies.autonomouscar1.component.ui;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
