@@ -4,6 +4,7 @@ import com.github.pauloubuntu.neuralnetworkstudies.autonomouscar1.component.ui.C
 
 import javax.swing.*;
 import java.awt.geom.Line2D;
+import java.util.logging.Logger;
 
 /**
  * Project: autonomouscar1
@@ -13,57 +14,102 @@ import java.awt.geom.Line2D;
  */
 public class FeelerSensorComponent {
 
+    private Logger logger = Logger.getLogger(getClass().getName());
+
     private JPanel parentPanel;
-    private Line2D backsideFeelerWire,rightDiagonalFeelerWire,leftDiagonalFeelerWire, frontsideFeelerWire;
+    private Line2D leftSideFeelerWire,rightSideFeelerWire, frontRightDiagonalFeelerWire, frontLeftDiagonalFeelerWire, frontsideFeelerWire, backsideFeelerWire, backRightDiagonalFeelerWire, backLeftDiagonalFeelerWire;
 
     public FeelerSensorComponent(JPanel parentPanel) {
         this.parentPanel = parentPanel;
     }
 
-    public void updateFeelerWires(CarComponent carComponent){
-            this.backsideFeelerWire = new Line2D.Double(
-                    carComponent.getX() + carComponent.getWidth() - 1,
-                    carComponent.getY() - carComponent.getHeight(),
-                    (carComponent.getX() + carComponent.getWidth() - 1)  + (carComponent.getX() + carComponent.getWidth() - 1) * Math.cos(Math.toRadians(carComponent.getAngle())) ,
-                    (carComponent.getY() + carComponent.getHeight() * 2)  + (carComponent.getY() + carComponent.getHeight() * 2) * Math.sin(Math.toRadians(carComponent.getAngle()))
+    public void initFeelerWires(CarComponent carComponent){
+
+            this.rightSideFeelerWire = new Line2D.Double(
+                    (carComponent.getX() + carComponent.getWidth()  / 2),
+                    (carComponent.getY() - carComponent.getHeight()),
+                    (carComponent.getX() + carComponent.getWidth()  / 2 ) ,
+                    (carComponent.getY() + carComponent.getHeight() / 2)
             );
 
+            this.leftSideFeelerWire = new Line2D.Double(
+                    (carComponent.getX() + carComponent.getWidth()  / 2),
+                    (carComponent.getY() + carComponent.getHeight() / 2),
+                    (carComponent.getX() + carComponent.getWidth()  / 2 ) ,
+                    (carComponent.getY() + carComponent.getHeight() * 2)
+            );
 
-        //They are working properly, the reason why I've commented them is because I need to implement rotating by angle to make it 'follow' the car component
-//            this.frontsideFeelerWire = new Line2D.Double(
-//                    carComponent.getX() - carComponent.getWidth(),
-//                    carComponent.getY() + carComponent.getHeight() / 2 ,
-//                    carComponent.getX() + carComponent.getWidth(),
-//                    carComponent.getY() + carComponent.getHeight() / 2
-//            );
-//
-//            this.rightDiagonalFeelerWire = new Line2D.Double(
-//                    carComponent.getX() - carComponent.getWidth(),
-//                    carComponent.getY() - carComponent.getHeight() ,
-//                    carComponent.getX() + carComponent.getWidth(),
-//                    carComponent.getY() + carComponent.getHeight() / 2
-//            );
-//
-//            this.leftDiagonalFeelerWire = new Line2D.Double(
-//                    carComponent.getX() - carComponent.getWidth(),
-//                    carComponent.getY() + carComponent.getHeight() * 2 ,
-//                    carComponent.getX() + carComponent.getWidth(),
-//                    carComponent.getY() + carComponent.getHeight() /2
-//            );
+            this.frontsideFeelerWire = new Line2D.Double(
+                    carComponent.getX() - carComponent.getWidth(),
+                    carComponent.getY() + carComponent.getHeight() / 2 ,
+                    carComponent.getX() + carComponent.getWidth() / 2,
+                    carComponent.getY() + carComponent.getHeight() / 2
+            );
+
+            this.backsideFeelerWire = new Line2D.Double(
+                    carComponent.getX() - carComponent.getWidth() / 2,
+                    carComponent.getY() + carComponent.getHeight() / 2 ,
+                    carComponent.getX() + carComponent.getWidth() * 2,
+                    carComponent.getY() + carComponent.getHeight() / 2
+            );
+
+            this.frontRightDiagonalFeelerWire = new Line2D.Double(
+                    carComponent.getX() - carComponent.getWidth(),
+                    carComponent.getY() - carComponent.getHeight() ,
+                    carComponent.getX() + carComponent.getWidth() / 2,
+                    carComponent.getY() + carComponent.getHeight() / 2
+            );
+
+            this.backRightDiagonalFeelerWire = new Line2D.Double(
+                    carComponent.getX() + carComponent.getWidth() / 2,
+                    carComponent.getY() + carComponent.getHeight() / 2 ,
+                    carComponent.getX() + carComponent.getWidth() * 2,
+                    carComponent.getY() - carComponent.getHeight()
+            );
+
+            this.frontLeftDiagonalFeelerWire = new Line2D.Double(
+                    carComponent.getX() - carComponent.getWidth(),
+                    carComponent.getY() + carComponent.getHeight() * 2 ,
+                    carComponent.getX() + carComponent.getWidth() / 2,
+                    carComponent.getY() + carComponent.getHeight() /2
+            );
+
+            this.backLeftDiagonalFeelerWire = new Line2D.Double(
+                    carComponent.getX() + carComponent.getWidth() / 2,
+                    carComponent.getY() + carComponent.getHeight() / 2 ,
+                    carComponent.getX() + carComponent.getWidth() * 2,
+                    carComponent.getY() + carComponent.getHeight() * 2
+            );
         parentPanel.repaint();
 
+    }
+
+    public Line2D getBackRightDiagonalFeelerWire() {
+        return backRightDiagonalFeelerWire;
+    }
+
+    public Line2D getBackLeftDiagonalFeelerWire() {
+        return backLeftDiagonalFeelerWire;
     }
 
     public Line2D getBacksideFeelerWire() {
         return backsideFeelerWire;
     }
 
-    public Line2D getRightDiagonalFeelerWire() {
-        return rightDiagonalFeelerWire;
+    public Line2D getLeftSideFeelerWire() {
+        return leftSideFeelerWire;
     }
 
-    public Line2D getLeftDiagonalFeelerWire() {
-        return leftDiagonalFeelerWire;
+    public Line2D getRightSideFeelerWire() {
+        return rightSideFeelerWire;
+    }
+
+    public Line2D getFrontRightDiagonalFeelerWire() {
+        return frontRightDiagonalFeelerWire;
+    }
+
+    public Line2D getFrontLeftDiagonalFeelerWire() {
+        return frontLeftDiagonalFeelerWire;
     }
 
     public Line2D getFrontsideFeelerWire() {

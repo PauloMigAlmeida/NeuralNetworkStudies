@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 /**
  * Project: autonomouscar1
@@ -16,6 +17,7 @@ import java.io.IOException;
  */
 public class GamePanel extends JPanel implements KeyListener{
 
+    private Logger logger = Logger.getLogger(getClass().getName());
 
     private CarComponent carComponent;
     private RoadComponent roadComponent;
@@ -43,7 +45,7 @@ public class GamePanel extends JPanel implements KeyListener{
 
 
         add(carComponent);
-        feelerSensorComponent.updateFeelerWires(carComponent);
+        feelerSensorComponent.initFeelerWires(carComponent);
 
         roadComponent.addToContentPanel(this);
         add(new BackgroundPanel());
@@ -55,21 +57,42 @@ public class GamePanel extends JPanel implements KeyListener{
     public void paint(Graphics g) {
         super.paint(g);
         Graphics2D g2 = (Graphics2D) g;
+        g2.setRenderingHint(
+                RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setStroke(new BasicStroke(3));
-        if(this.feelerSensorComponent.getBacksideFeelerWire() != null){
-            g2.draw(feelerSensorComponent.getBacksideFeelerWire());
+        g2.setColor(Color.BLACK);
+
+        if(this.feelerSensorComponent.getLeftSideFeelerWire() != null){
+            g2.draw(feelerSensorComponent.getLeftSideFeelerWire());
+        }
+
+        if(this.feelerSensorComponent.getRightSideFeelerWire() != null){
+            g2.draw(feelerSensorComponent.getRightSideFeelerWire());
         }
 
         if(this.feelerSensorComponent.getFrontsideFeelerWire() != null){
             g2.draw(feelerSensorComponent.getFrontsideFeelerWire());
         }
 
-        if(this.feelerSensorComponent.getRightDiagonalFeelerWire() != null){
-            g2.draw(feelerSensorComponent.getRightDiagonalFeelerWire());
+        if(this.feelerSensorComponent.getBacksideFeelerWire() != null){
+            g2.draw(feelerSensorComponent.getBacksideFeelerWire());
         }
 
-        if(this.feelerSensorComponent.getLeftDiagonalFeelerWire() != null){
-            g2.draw(feelerSensorComponent.getLeftDiagonalFeelerWire());
+        if(this.feelerSensorComponent.getFrontRightDiagonalFeelerWire() != null){
+            g2.draw(feelerSensorComponent.getFrontRightDiagonalFeelerWire());
+        }
+
+        if(this.feelerSensorComponent.getFrontLeftDiagonalFeelerWire() != null){
+            g2.draw(feelerSensorComponent.getFrontLeftDiagonalFeelerWire());
+        }
+
+        if(this.feelerSensorComponent.getBackRightDiagonalFeelerWire() != null){
+            g2.draw(feelerSensorComponent.getBackRightDiagonalFeelerWire());
+        }
+
+        if(this.feelerSensorComponent.getBackLeftDiagonalFeelerWire() != null){
+            g2.draw(feelerSensorComponent.getBackLeftDiagonalFeelerWire());
         }
     }
 
@@ -80,18 +103,18 @@ public class GamePanel extends JPanel implements KeyListener{
     @Override
     public void keyTyped(KeyEvent keyEvent) {
         this.carComponent.keyTyped(keyEvent);
-        this.feelerSensorComponent.updateFeelerWires(carComponent);
+        this.feelerSensorComponent.initFeelerWires(carComponent);
     }
 
     @Override
     public void keyPressed(KeyEvent keyEvent) {
         this.carComponent.keyPressed(keyEvent);
-        this.feelerSensorComponent.updateFeelerWires(carComponent);
+        this.feelerSensorComponent.initFeelerWires(carComponent);
     }
 
     @Override
     public void keyReleased(KeyEvent keyEvent) {
-        this.carComponent.keyReleased(keyEvent);
-        this.feelerSensorComponent.updateFeelerWires(carComponent);
+//        this.carComponent.keyReleased(keyEvent);
+//        this.feelerSensorComponent.updateFeelerWires(carComponent);
     }
 }

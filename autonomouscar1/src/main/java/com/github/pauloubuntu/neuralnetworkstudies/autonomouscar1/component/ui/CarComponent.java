@@ -47,6 +47,9 @@ public class CarComponent extends JPanel implements KeyListener {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(
+                RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
         Dimension size = getSize();
         int w = (int) size.getWidth(), h = (int) size.getHeight();
         g2d.drawImage(drawImage, (w - drawImage.getWidth())/2,(h - drawImage.getHeight())/2, null);
@@ -73,7 +76,7 @@ public class CarComponent extends JPanel implements KeyListener {
     //-----------------------------------
 
     public static BufferedImage tilt(BufferedImage image, double angle, GraphicsConfiguration gc) {
-        System.out.println("Angle is : " + angle);
+//        System.out.println("Angle is : " + angle);
         double sin = Math.abs(Math.sin(angle)), cos = Math.abs(Math.cos(angle));
         int w = image.getWidth(), h = image.getHeight();
         int neww = (int)Math.floor(w*cos+h*sin), newh = (int)Math.floor(h*cos+w*sin);
@@ -104,12 +107,22 @@ public class CarComponent extends JPanel implements KeyListener {
             yDirection = rect.y -(int) (VELOCITY * Math.sin(Math.toRadians(angle)));
             this.setLocation(xDirection, yDirection);
         } else if (keyEvent.getKeyCode() == KeyEvent.VK_LEFT) {
+            // It makes no difference on calculations but it's cleaner to read when we're debugging it
+            if(this.angle - 3 < 0)
+            {
+                this.angle = 360;
+            }
             this.angle -= 3 * STEERING_WHEEL_FACTOR;
             drawImage = tilt(backgroundImage,Math.toRadians(angle),gc);
             xDirection = rect.x - (int) (VELOCITY * Math.cos(Math.toRadians(angle)));
             yDirection = rect.y -(int) (VELOCITY * Math.sin(Math.toRadians(angle)));
             this.setLocation(xDirection, yDirection);
         } else if (keyEvent.getKeyCode() == KeyEvent.VK_RIGHT) {
+            // It makes no difference on calculations but it's cleaner to read when we're debugging it
+            if(this.angle + 3 > 360)
+            {
+                this.angle = 0;
+            }
             this.angle += 3 * STEERING_WHEEL_FACTOR;
             drawImage = tilt(backgroundImage,Math.toRadians(angle),gc);
             xDirection = rect.x - (int) (VELOCITY * Math.cos(Math.toRadians(angle)));
