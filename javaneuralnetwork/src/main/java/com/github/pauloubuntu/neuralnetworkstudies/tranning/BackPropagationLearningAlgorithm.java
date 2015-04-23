@@ -29,78 +29,78 @@ package com.github.pauloubuntu.neuralnetworkstudies.tranning;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import com.github.pauloubuntu.neuralnetworkstudies.nnet.TranningSet;
+import com.github.pauloubuntu.neuralnetworkstudies.nnet.TrainingSet;
 
 public class BackPropagationLearningAlgorithm {
 
     private final Logger logger = Logger.getLogger(this.getClass().getSimpleName());
-    private TranningSet tranningSet;
+    private TrainingSet trainingSet;
 
-    public BackPropagationLearningAlgorithm(TranningSet tranningSet) {
-        this.tranningSet = tranningSet;
+    public BackPropagationLearningAlgorithm(TrainingSet trainingSet) {
+        this.trainingSet = trainingSet;
     }
 
     public void train(double learningRate, long numSteps) {
         logger.log(Level.INFO, String.format("Trainning started with learningRate of: %f", learningRate));
         for (int i = 0, tranningSampleIndex = 0; i < numSteps; i++, tranningSampleIndex++) {
 
-            double[] errorOutputLayer = new double[tranningSet.getNetwork().getOutputLayer().size()];
-            double[] errorHiddenLayer = new double[tranningSet.getNetwork().getHiddenLayer().size()];
+            double[] errorOutputLayer = new double[trainingSet.getNetwork().getOutputLayer().size()];
+            double[] errorHiddenLayer = new double[trainingSet.getNetwork().getHiddenLayer().size()];
 
             // if we run out of sample then we simply iterave it over and over again
-            if (tranningSampleIndex == tranningSet.getX().length) {
+            if (tranningSampleIndex == trainingSet.getX().length) {
                 tranningSampleIndex = 0;
             }
-            double[] tranningSample = tranningSet.getX()[tranningSampleIndex];
-            double[] actualOutput = tranningSet.getNetwork().predict(tranningSample, false);
-            double[] targetOutput = tranningSet.getY()[tranningSampleIndex];
+            double[] tranningSample = trainingSet.getX()[tranningSampleIndex];
+            double[] actualOutput = trainingSet.getNetwork().predict(tranningSample, false);
+            double[] targetOutput = trainingSet.getY()[tranningSampleIndex];
 
             // Calculate the output layer error.
-            for (int out = 0; out < tranningSet.getNetwork().getOutputLayer().size(); out++) {
+            for (int out = 0; out < trainingSet.getNetwork().getOutputLayer().size(); out++) {
                 errorOutputLayer[out] = (targetOutput[out] - actualOutput[out]) * sigmoidDerivative(actualOutput[out]);
             }
             
             // Calculate the hidden layer error
-            for (int hidden = 0; hidden < tranningSet.getNetwork().getHiddenLayer().size(); hidden++) {
+            for (int hidden = 0; hidden < trainingSet.getNetwork().getHiddenLayer().size(); hidden++) {
                 errorHiddenLayer[hidden] = 0.0;
-                for (int out = 0; out < tranningSet.getNetwork().getOutputLayer().size(); out++) {
-                    errorHiddenLayer[hidden] = errorOutputLayer[out] * tranningSet.getNetwork().getOutputLayer().getProcessNeurons()[out].getWeightValues()[hidden];
+                for (int out = 0; out < trainingSet.getNetwork().getOutputLayer().size(); out++) {
+                    errorHiddenLayer[hidden] = errorOutputLayer[out] * trainingSet.getNetwork().getOutputLayer().getProcessNeurons()[out].getWeightValues()[hidden];
                 }
                 if(hidden != 0){
-                    errorHiddenLayer[hidden] *= sigmoidDerivative(tranningSet.getNetwork().getHiddenLayer().getProcessNeurons()[hidden].getOutputValue());   
+                    errorHiddenLayer[hidden] *= sigmoidDerivative(trainingSet.getNetwork().getHiddenLayer().getProcessNeurons()[hidden].getOutputValue());
                 }                
             }
 
             // Update the weights for the output layer
-            for (int out = 0; out < tranningSet.getNetwork().getOutputLayer().size(); out++) {
-                for (int hidden = 0; hidden < tranningSet.getNetwork().getHiddenLayer().size() + 1; hidden++) {
+            for (int out = 0; out < trainingSet.getNetwork().getOutputLayer().size(); out++) {
+                for (int hidden = 0; hidden < trainingSet.getNetwork().getHiddenLayer().size() + 1; hidden++) {
                     if (hidden == 0) {                        
-                        tranningSet.getNetwork().getOutputLayer().getProcessNeurons()[out].getWeightValues()[hidden] += (learningRate
+                        trainingSet.getNetwork().getOutputLayer().getProcessNeurons()[out].getWeightValues()[hidden] += (learningRate
                                 * errorOutputLayer[out]);
                     } else {
-                        tranningSet.getNetwork().getOutputLayer().getProcessNeurons()[out].getWeightValues()[hidden] += (learningRate
+                        trainingSet.getNetwork().getOutputLayer().getProcessNeurons()[out].getWeightValues()[hidden] += (learningRate
                                 * errorOutputLayer[out]
-                                * tranningSet.getNetwork().getOutputLayer().getProcessNeurons()[out].getInputValues()[hidden]);
+                                * trainingSet.getNetwork().getOutputLayer().getProcessNeurons()[out].getInputValues()[hidden]);
                     }
                 }
             }
 
             
             // Update the weights for the hidden layer.
-            for (int hidden = 0; hidden < tranningSet.getNetwork().getHiddenLayer().size(); hidden++) {
-                for (int input = 0; input < tranningSet.getNetwork().getInputLayer().size(); input++) {
+            for (int hidden = 0; hidden < trainingSet.getNetwork().getHiddenLayer().size(); hidden++) {
+                for (int input = 0; input < trainingSet.getNetwork().getInputLayer().size(); input++) {
                     if (input == 0) {
-                        tranningSet.getNetwork().getHiddenLayer().getProcessNeurons()[hidden].getWeightValues()[input] += (learningRate
+                        trainingSet.getNetwork().getHiddenLayer().getProcessNeurons()[hidden].getWeightValues()[input] += (learningRate
                                 * errorHiddenLayer[hidden]);
                     }else{
-                        tranningSet.getNetwork().getHiddenLayer().getProcessNeurons()[hidden].getWeightValues()[input] += (learningRate
+                        trainingSet.getNetwork().getHiddenLayer().getProcessNeurons()[hidden].getWeightValues()[input] += (learningRate
                                 * errorHiddenLayer[hidden]
-                                * tranningSet.getNetwork().getHiddenLayer().getProcessNeurons()[hidden].getInputValues()[input]);
+                                * trainingSet.getNetwork().getHiddenLayer().getProcessNeurons()[hidden].getInputValues()[input]);
                     }
                 } 
             }
 
-            double costFunctionValue = tranningSet.calculateCostFunction(0);
+            double costFunctionValue = trainingSet.calculateCostFunction(0);
             logger.log(Level.INFO, String.format("step: %d cost: %f", i, costFunctionValue));
         }
     }

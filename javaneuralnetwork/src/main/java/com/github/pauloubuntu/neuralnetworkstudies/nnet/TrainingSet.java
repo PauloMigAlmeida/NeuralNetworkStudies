@@ -32,13 +32,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-public class TranningSet {
+public class TrainingSet {
     private final Logger logger = Logger.getLogger(this.getClass().getSimpleName());
     private double[][] x;
     private double[][] y;
     private MultiLayerFeedForwardNetwork network;
 
-    public TranningSet(double[][] x, double[][] y, MultiLayerFeedForwardNetwork network) {
+    public TrainingSet(double[][] x, double[][] y, MultiLayerFeedForwardNetwork network) {
         this.x = x;
         this.y = y;
         this.network = network;

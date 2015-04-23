@@ -29,7 +29,7 @@ package com.github.pauloubuntu.neuralnetworkstudies.main;
 
 import com.github.pauloubuntu.neuralnetworkstudies.activation.SigmoidActivation;
 import com.github.pauloubuntu.neuralnetworkstudies.nnet.MultiLayerFeedForwardNetwork;
-import com.github.pauloubuntu.neuralnetworkstudies.nnet.TranningSet;
+import com.github.pauloubuntu.neuralnetworkstudies.nnet.TrainingSet;
 import com.github.pauloubuntu.neuralnetworkstudies.tranning.BackPropagationLearningAlgorithm;
 
 import java.util.Arrays;
@@ -44,7 +44,7 @@ public class MultiLayerFeedforwardNetworkTest {
         SigmoidActivation sigmoidActivation = new SigmoidActivation();
         MultiLayerFeedForwardNetwork network = new MultiLayerFeedForwardNetwork(2, 4, 1, sigmoidActivation, sigmoidActivation);
 
-        TranningSet tranningSet = new TranningSet(
+        TrainingSet trainingSet = new TrainingSet(
                 new double[][]{
                     {0.0, 0.0},
                     {1.0, 0.0},
@@ -60,9 +60,9 @@ public class MultiLayerFeedforwardNetworkTest {
                 network
         );
 
-        tranningSet.calculateCostFunction(0.0d);
+        trainingSet.calculateCostFunction(0.0d);
 
-        BackPropagationLearningAlgorithm learningAlgorithm = new BackPropagationLearningAlgorithm(tranningSet);
+        BackPropagationLearningAlgorithm learningAlgorithm = new BackPropagationLearningAlgorithm(trainingSet);
         learningAlgorithm.train(1.0, 100000);
 
         // Run it
